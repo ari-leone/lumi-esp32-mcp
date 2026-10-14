@@ -1,0 +1,2 @@
+# The web app itself still has no external dependencies.
+mcp==1.30.0

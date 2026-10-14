@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2"><title>Lumi · Notas y tareas</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='20' fill='%23f6bf57'/%3E%3Cpath d='M20 17v30h25' fill='none' stroke='%232d3936' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Lumi inicio"><span class="brand-mark">L<span>✦</span></span><span>Lumi<small>NOTAS Y TAREAS</small></span></a>
+    <div class="workspace-label">TU ESPACIO</div>
+    <nav aria-label="Vistas">
+      <button class="nav-item active" data-view="pending"><span class="nav-icon">◷</span>Pendientes<span class="count" id="count-pending">0</span></button>
+      <button class="nav-item" data-view="completed"><span class="nav-icon">✓</span>Completadas<span class="count" id="count-completed">0</span></button>
+      <button class="nav-item" data-view="notes"><span class="nav-icon">▤</span>Notas<span class="count" id="count-notes">0</span></button>
+      <div class="nav-divider"></div>
+      <button class="nav-item" data-view="trash"><span class="nav-icon">♧</span>Papelera<span class="count" id="count-trash">0</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="local-card"><span class="status-dot"></span><div>Guardado en tu PC<small>Tu espacio, siempre a mano.</small></div></div>
+      <button class="utility" id="export-button">↗ Exportar mis datos</button>
+      <button class="utility" id="import-button">↙ Importar datos</button>
+      <button class="utility" id="backup-button">◫ Crear copia de seguridad</button>
+      <input type="file" id="import-file" accept=".json,application/json" hidden>
+      <div class="sidebar-foot">Un poco de orden. Más tranquilidad.</div>
+    </div>
+  </aside>
+  <main>
+    <header class="topbar"><div id="today"></div><div class="connection" id="connection"><span class="status-dot"></span>Espacio local</div></header>
+    <section class="intro"><div><div class="eyebrow">DESPEJA TU MENTE</div><h1 id="view-title">Tus pendientes<span>.</span></h1><p id="view-description">Paso a paso, lo importante encuentra su lugar.</p></div><button class="primary" id="new-button"><span>＋</span> Nueva tarea</button></section>
+    <section class="summary" aria-label="Resumen"><div><span class="summary-icon amber">◷</span><div><strong id="summary-pending">0</strong><span>Por hacer</span></div></div><div><span class="summary-icon green">✓</span><div><strong id="summary-completed">0</strong><span>Completadas</span></div></div><div><span class="summary-icon lavender">▤</span><div><strong id="summary-notes">0</strong><span>Ideas guardadas</span></div></div></section>
+    <section class="collection">
+      <div class="toolbar"><h2 id="list-label">Tu lista de tareas <span id="list-total">0</span></h2><div class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Buscar en esta lista…" aria-label="Buscar en esta lista"></div></div>
+      <div id="load-error" class="error-banner" hidden><span id="error-message"></span><button id="retry-button">Reintentar</button></div>
+      <div id="items" class="items" aria-live="polite"></div>
+      <div id="empty" class="empty" hidden><div class="empty-art"><span>✓</span><i>✦</i></div><h3 id="empty-title">Haz espacio para lo que viene</h3><p id="empty-description">Añade tu primera tarea y empieza por un pequeño paso.</p><button id="empty-create" class="secondary">＋ Crear mi primera tarea</button></div>
+      <button id="load-more" class="secondary load-more" hidden>Mostrar más</button>
+      <footer class="list-footer"><span id="footer-count">0 tareas en esta lista</span><span>Hecho a tu ritmo <span class="tiny-spark">✦</span></span></footer>
+    </section>
+    <div class="bottom-note">Las fechas límite te ayudan a organizarte. Los avisos y recordatorios llegarán más adelante.</div>
+  </main>
+  <dialog id="editor" aria-labelledby="editor-title"><form id="editor-form"><div class="dialog-header"><div><div class="eyebrow" id="editor-eyebrow">UN PEQUEÑO PASO</div><h2 id="editor-title">Nueva tarea</h2></div><button type="button" class="icon-button" id="close-editor" aria-label="Cerrar">×</button></div><label for="title">Título</label><input id="title" name="title" maxlength="200" required placeholder="¿Qué tienes en mente?" autocomplete="off"><label for="text" id="text-label">Descripción <span>opcional</span></label><textarea id="text" name="text" maxlength="20000" rows="7" placeholder="Añade detalles, ideas o lo que quieras recordar…"></textarea><div id="date-field"><label for="due-date">Fecha límite <span>opcional · sin alarma</span></label><input id="due-date" type="date" name="due_date"></div><p class="editor-meta" id="editor-meta"></p><div id="editor-error" class="form-error" role="alert" hidden></div><button type="button" id="reload-item" class="secondary" hidden>Recargar versión actual</button><div class="dialog-actions"><button type="button" id="cancel-editor" class="secondary">Cancelar</button><button type="submit" id="save-button" class="primary">Guardar tarea</button></div></form></dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-header"><h2 id="confirm-title">Mover a la papelera</h2></div><p id="confirm-text"></p><p class="muted">Podrás recuperarlo desde Papelera.</p><div class="dialog-actions"><button class="secondary" id="cancel-delete">Cancelar</button><button class="danger" id="confirm-delete">Mover a la papelera</button></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
